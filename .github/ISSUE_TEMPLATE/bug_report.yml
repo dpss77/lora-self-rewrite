@@ -1,0 +1,52 @@
+name: Bug report
+description: Report a reproducible code or protocol problem.
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include secrets, tokens, customer data, private adapters, or raw evaluation text.
+        For security issues use the private advisory link in the issue chooser.
+  - type: input
+    id: commit
+    attributes:
+      label: Commit / version
+      description: Full Git SHA or release tag.
+      placeholder: "72c96e3"
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Expected vs actual behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+      description: Exact command(s), config, and logs with secrets removed.
+    validations:
+      required: true
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Layer
+      options:
+        - Unit / protocol
+        - Cache / manifest / artifact
+        - Session / resume
+        - GPU / Modal / vLLM
+        - Docs / discoverability
+        - Unknown
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Before submitting
+      options:
+        - label: I removed secrets, private data, raw adapters, and private logs.
+          required: true

@@ -1,0 +1,63 @@
+name: Compute sponsorship / H200 run
+description: Offer H200 access, Modal credits, or run the next seed/held-out sweep.
+title: "[compute] "
+labels: ["compute", "sponsorship"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for considering compute support. Do **not** post tokens, credentials, private data,
+        or customer information. A maintainer will coordinate privately.
+        The smallest useful request is Tier 1: G2 smoke + multi-seed v1 + 490×8 held-out
+        (estimated $165–$285; see docs/04-operations/COMPUTE_BUDGET.md).
+  - type: dropdown
+    id: tier
+    attributes:
+      label: Scope you can support
+      options:
+        - Tier 1 — v1 (G2 + seeds + held-out)
+        - Tier 2 — v1 + dt_bias/A_log + multi-session chaining
+        - Tier 3 — optional repair/ablations + buffer
+        - Other / partial
+    validations:
+      required: true
+  - type: checkboxes
+    id: compute
+    attributes:
+      label: Compute available
+      options:
+        - label: NVIDIA H200 access
+        - label: Modal credits
+        - label: Other cloud GPU credits
+        - label: Funding for Modal compute
+  - type: input
+    id: amount
+    attributes:
+      label: H200-hours or credit amount
+      description: Approximate; no credentials or account IDs.
+      placeholder: "e.g. 40 H200-hours or $200 Modal credits"
+    validations:
+      required: false
+  - type: input
+    id: timeline
+    attributes:
+      label: Expected timeline
+      placeholder: "e.g. available now, next month, one-off"
+    validations:
+      required: false
+  - type: textarea
+    id: coordination
+    attributes:
+      label: Coordination preference
+      description: Public GitHub thread, Discussions, or a private contact method you will provide later. Do not post secrets.
+    validations:
+      required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Acknowledgements
+      options:
+        - label: I understand this is an unproven PoC with no efficacy claim.
+          required: true
+        - label: I will not post secrets, customer data, or private adapter files.
+          required: true

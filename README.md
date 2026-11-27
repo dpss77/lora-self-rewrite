@@ -1,7 +1,7 @@
 # Self-Rewriting LLMs via Zero-Initialized LoRA Workspaces
 
 [![Paper](https://img.shields.io/badge/paper-arXiv%3A2611.21885v2-blueviolet)](https://arxiv.org/abs/2611.21885v2)
-[![Tests](https://img.shields.io/badge/tests-CPU%20suite-brightgreen)](tests/README.md)
+[![CI](https://github.com/dpss77/lora-self-rewrite/actions/workflows/ci.yml/badge.svg)](https://github.com/dpss77/lora-self-rewrite/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Python 3.11+ | uv](https://img.shields.io/badge/python-3.11%2B%20%7C%20uv-blue)](pyproject.toml)
 [![Status](https://img.shields.io/badge/status-PoC%20harness%20complete%20%7C%20compute%20wanted-blue)](docs/04-operations/COMPUTE_BUDGET.md)
