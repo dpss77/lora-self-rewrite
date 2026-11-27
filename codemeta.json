@@ -12,8 +12,8 @@
     }
   ],
   "license": "https://opensource.org/licenses/MIT",
-  "codeRepository": "https://github.com/dpss77/lora-self-rewrite",
-  "issueTracker": "https://github.com/dpss77/lora-self-rewrite/issues",
+  "codeRepository": "https://github.com/dnpardo/lora-self-rewrite",
+  "issueTracker": "https://github.com/dnpardo/lora-self-rewrite/issues",
   "programmingLanguage": ["Python"],
   "runtimePlatform": ["Python 3.11", "Linux", "NVIDIA H200"],
   "keywords": ["large language models", "LoRA", "PEFT", "self-rewriting", "model editing", "vLLM", "Modal", "Qwen3.5", "H200", "reproducibility"],
