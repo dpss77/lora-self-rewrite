@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:lora-self-rewrite:schema:pass:1",
+  "title": "Graded generate pass (`pass_<n>.json`)",
+  "description": "Per-pass generation artifact written by src/lora_self_rewrite/session.py. Rows are the vLLM engine rows plus the current grader's `correct` label. `base` is null when the pass did not request base outputs; `candidates` is keyed by active/candidate name. Row fields not listed (for example `finish_reason`) are optional diagnostics.",
+  "type": "object",
+  "required": ["base", "candidates"],
+  "properties": {
+    "base": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/row"
+          }
+        }
+      ]
+    },
+    "candidates": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/row"
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "row": {
+      "type": "object",
+      "required": [
+        "id",
+        "sample_idx",
+        "problem",
+        "answer",
+        "text",
+        "tokens",
+        "cut",
+        "loop",
+        "correct"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "sample_idx": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "problem": {
+          "type": "string"
+        },
+        "answer": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "finish_reason": {
+          "type": ["string", "null"]
+        },
+        "cut": {
+          "type": ["boolean", "integer"],
+          "enum": [true, false, 0, 1]
+        },
+        "loop": {
+          "type": ["boolean", "integer"],
+          "enum": [true, false, 0, 1]
+        },
+        "correct": {
+          "type": ["boolean", "integer"],
+          "enum": [true, false, 0, 1]
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,516 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:lora-self-rewrite:schema:heldout:1",
+  "title": "Held-out evaluation result (`40_HELDOUT/HELDOUT.json`)",
+  "description": "Result of src/lora_self_rewrite/eval_heldout.py:run_heldout. A base-only precompute has no `edited`/`stats`; a submitted-adapter evaluation requires both. Rows are the shared engine row shape; per-row optional diagnostics are not enumerated. Environment/package maps are provenance and may grow without a schema bump.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "experiment_id",
+    "slice",
+    "heldout_slice",
+    "n_problems",
+    "n_samples",
+    "max_tokens",
+    "k_shards",
+    "cache_tag",
+    "model_id",
+    "model_revision",
+    "eval_engine_config",
+    "eval_engine_config_hash",
+    "package_versions",
+    "environment",
+    "dataset",
+    "base_cache_signature",
+    "dataset_path",
+    "adapter_dir",
+    "adapter_provenance",
+    "base_only",
+    "dev_override",
+    "base"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "experiment_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "slice": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "integer"
+        }
+      ],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "heldout_slice": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "integer"
+        }
+      ],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "n_problems": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "n_samples": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "max_tokens": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "k_shards": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "cache_tag": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "eval_engine_config": {
+      "$ref": "#/$defs/engine_config"
+    },
+    "eval_engine_config_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "package_versions": {
+      "$ref": "#/$defs/package_versions"
+    },
+    "environment": {
+      "type": "object",
+      "required": [
+        "gpu_name",
+        "torch_version",
+        "vllm_version",
+        "model_id",
+        "model_revision",
+        "eval_engine_config",
+        "eval_engine_config_hash",
+        "package_versions"
+      ],
+      "properties": {
+        "gpu_name": {
+          "type": ["string", "null"]
+        },
+        "torch_version": {
+          "type": ["string", "null"]
+        },
+        "vllm_version": {
+          "type": ["string", "null"]
+        },
+        "model_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "eval_engine_config": {
+          "$ref": "#/$defs/engine_config"
+        },
+        "eval_engine_config_hash": {
+          "type": "string",
+          "minLength": 1
+        },
+        "package_versions": {
+          "$ref": "#/$defs/package_versions"
+        }
+      },
+      "additionalProperties": true
+    },
+    "dataset": {
+      "type": "object",
+      "required": ["heldout_slice", "source_revisions", "content_sha256", "identity"],
+      "properties": {
+        "heldout_slice": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "source_revisions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "content_sha256": {
+          "type": "string"
+        },
+        "identity": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "base_cache_signature": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dataset_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "adapter_dir": {
+      "type": ["string", "null"]
+    },
+    "adapter_provenance": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "required": [
+            "schema_version",
+            "decision",
+            "session_id",
+            "model_id",
+            "adapter_sha256",
+            "written_at_utc"
+          ],
+          "properties": {
+            "schema_version": {
+              "const": 1
+            },
+            "decision": {
+              "const": "SUBMIT"
+            },
+            "session_id": {
+              "type": ["string", "null"]
+            },
+            "model_id": {
+              "type": "string"
+            },
+            "adapter_sha256": {
+              "type": "string"
+            },
+            "written_at_utc": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "base_only": {
+      "type": "boolean"
+    },
+    "dev_override": {
+      "type": "boolean"
+    },
+    "base": {
+      "type": "object",
+      "required": ["rows"],
+      "properties": {
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/row"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "edited": {
+      "type": "object",
+      "required": ["rows", "adapter_sha256"],
+      "properties": {
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/row"
+          }
+        },
+        "adapter_sha256": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "adapter_sha256": {
+      "type": ["string", "null"]
+    },
+    "stats": {
+      "$ref": "#/$defs/stats"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": ["base_only"],
+        "properties": {
+          "base_only": {
+            "const": false
+          }
+        }
+      },
+      "then": {
+        "required": ["edited", "adapter_sha256", "stats"]
+      }
+    }
+  ],
+  "additionalProperties": true,
+  "$defs": {
+    "engine_config": {
+      "type": "object",
+      "required": [
+        "model_id",
+        "model_revision",
+        "dtype",
+        "max_model_len",
+        "max_num_seqs",
+        "max_loras",
+        "max_lora_rank",
+        "gpu_memory_utilization",
+        "enable_sleep_mode",
+        "enable_prefix_caching",
+        "trust_remote_code",
+        "generation_config_hash"
+      ],
+      "properties": {
+        "model_id": {
+          "type": "string"
+        },
+        "model_revision": {
+          "type": "string"
+        },
+        "dtype": {
+          "type": "string"
+        },
+        "max_model_len": {
+          "type": "integer"
+        },
+        "max_num_seqs": {
+          "type": "integer"
+        },
+        "max_loras": {
+          "type": "integer"
+        },
+        "max_lora_rank": {
+          "type": "integer"
+        },
+        "gpu_memory_utilization": {
+          "type": "number"
+        },
+        "enable_sleep_mode": {
+          "type": "boolean"
+        },
+        "enable_prefix_caching": {
+          "type": "boolean"
+        },
+        "trust_remote_code": {
+          "type": "boolean"
+        },
+        "generation_config_hash": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "package_versions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": ["string", "null"]
+      }
+    },
+    "row": {
+      "type": "object",
+      "required": [
+        "id",
+        "sample_idx",
+        "problem",
+        "answer",
+        "text",
+        "tokens",
+        "cut",
+        "loop",
+        "correct"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "sample_idx": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "problem": {
+          "type": "string"
+        },
+        "answer": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "finish_reason": {
+          "type": ["string", "null"]
+        },
+        "cut": {
+          "type": ["boolean", "integer"],
+          "enum": [true, false, 0, 1]
+        },
+        "loop": {
+          "type": ["boolean", "integer"],
+          "enum": [true, false, 0, 1]
+        },
+        "correct": {
+          "type": ["boolean", "integer"],
+          "enum": [true, false, 0, 1]
+        }
+      },
+      "additionalProperties": true
+    },
+    "stats": {
+      "type": "object",
+      "required": [
+        "n",
+        "n_answers",
+        "base_acc",
+        "base_cut",
+        "base_loop",
+        "n_problems",
+        "samples_per_problem",
+        "edited_acc",
+        "delta",
+        "se",
+        "ci_low",
+        "ci_high",
+        "signflip_p_one_sided",
+        "signflip_p_two_sided",
+        "mcnemar_p",
+        "wrong_to_right",
+        "right_to_wrong",
+        "edited_cut",
+        "edited_loop"
+      ],
+      "properties": {
+        "n": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "n_answers": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "base_acc": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "base_cut": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "base_loop": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "n_problems": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "samples_per_problem": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "const": "mixed"
+            }
+          ]
+        },
+        "edited_acc": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "delta": {
+          "type": "number"
+        },
+        "se": {
+          "type": "number",
+          "minimum": 0
+        },
+        "ci_low": {
+          "type": "number"
+        },
+        "ci_high": {
+          "type": "number"
+        },
+        "signflip_p_one_sided": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "signflip_p_two_sided": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "mcnemar_p": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "wrong_to_right": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "right_to_wrong": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "edited_cut": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "edited_loop": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

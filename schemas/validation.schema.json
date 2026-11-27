@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:lora-self-rewrite:schema:validation:1",
+  "title": "Reserved-validation result",
+  "description": "Problem-clustered paired statistics for the reserved-validation gate, produced by src/lora_self_rewrite/stats.py:compute_paired_stats and recorded as `val_stats` in the transcript and `validation_stats` in SUBMIT provenance. Row arrays are not a separate artifact in the current session writer, so per-answer diagnostics are intentionally not enumerated.",
+  "type": "object",
+  "required": [
+    "n",
+    "n_answers",
+    "base_acc",
+    "base_cut",
+    "base_loop",
+    "n_problems",
+    "samples_per_problem",
+    "edited_acc",
+    "delta",
+    "se",
+    "ci_low",
+    "ci_high",
+    "signflip_p_one_sided",
+    "signflip_p_two_sided",
+    "mcnemar_p",
+    "wrong_to_right",
+    "right_to_wrong",
+    "edited_cut",
+    "edited_loop"
+  ],
+  "properties": {
+    "n": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "n_answers": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "base_acc": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "base_cut": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "base_loop": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "n_problems": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "samples_per_problem": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 1
+        },
+        {
+          "const": "mixed"
+        }
+      ]
+    },
+    "edited_acc": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "delta": {
+      "type": "number"
+    },
+    "se": {
+      "type": "number",
+      "minimum": 0
+    },
+    "ci_low": {
+      "type": "number"
+    },
+    "ci_high": {
+      "type": "number"
+    },
+    "signflip_p_one_sided": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "signflip_p_two_sided": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "mcnemar_p": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "wrong_to_right": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "right_to_wrong": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "edited_cut": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "edited_loop": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "additionalProperties": true
+}

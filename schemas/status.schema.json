@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:lora-self-rewrite:schema:status:1",
+  "title": "Final status (`80_FINAL/STATUS.json`)",
+  "description": "Compact terminal/non-terminal status written by scripts/finalize_run.py after the manifest transition and checksum seal.",
+  "type": "object",
+  "required": [
+    "run_id",
+    "status",
+    "decision",
+    "submitted_lora",
+    "finished_at_utc",
+    "checksums"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "planned",
+        "running",
+        "preempted",
+        "failed",
+        "withdrawn",
+        "submitted",
+        "validated-null",
+        "validated-positive",
+        "archived"
+      ]
+    },
+    "decision": {
+      "type": ["string", "null"]
+    },
+    "submitted_lora": {
+      "type": "boolean"
+    },
+    "finished_at_utc": {
+      "type": ["string", "null"]
+    },
+    "checksums": {
+      "type": ["string", "null"]
+    }
+  },
+  "additionalProperties": false
+}

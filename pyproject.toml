@@ -1,0 +1,87 @@
+[project]
+name = "lora-self-rewrite"
+version = "0.1.0"
+description = "Zero-initialized LoRA workspace adaptation of arXiv:2611.21885v2 (Language Models Can Rewrite Their Own Weights)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Daniel Pardo" }]
+keywords = [
+  "large language models",
+  "LoRA",
+  "PEFT",
+  "self-rewriting",
+  "model editing",
+  "vLLM",
+  "Modal",
+  "Qwen3.5",
+  "H200",
+  "reproducibility",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+  # Pure/CPU protocol layer. Runtime extras below pull the heavy stack.
+  "math-verify",
+  "safetensors>=0.4.5",
+  "huggingface_hub",
+]
+
+[project.urls]
+  Repository = "https://github.com/dpss77/lora-self-rewrite"
+  Issues = "https://github.com/dpss77/lora-self-rewrite/issues"
+  Paper = "https://arxiv.org/abs/2611.21885v2"
+  Documentation = "https://github.com/dpss77/lora-self-rewrite/tree/main/docs"
+
+[project.optional-dependencies]
+# Test/CPU profile: no vLLM, Modal, or GPU serving packages.
+cpu = ["torch", "datasets"]
+dev = ["pytest>=8", "ruff>=0.6"]
+# GPU/runtime profile (the Modal image pins its own exact versions).
+gpu = [
+  "torch",
+  "transformers",
+  "peft",
+  "accelerate>=1.0.0",
+  "vllm",
+  "datasets",
+]
+serve = ["modal"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/lora_self_rewrite"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q --strict-markers --strict-config -m \"not hardware\""
+markers = [
+  "unit: pure CPU tests with no I/O beyond temporary files",
+  "contract: donor parity, cache keys/tags, prompt and golden-value contracts",
+  "integration: fake-engine session/resume/script/eval orchestration tests",
+  "hardware: H200 smoke tests; never run by default or in CI",
+  "slow: long-running CPU tests; opt in explicitly",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "I", "UP"]
+
+[dependency-groups]
+dev = [
+    "jsonschema>=4.26.0",
+]

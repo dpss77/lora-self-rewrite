@@ -1,0 +1,344 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:lora-self-rewrite:schema:metrics:1",
+  "title": "Session metrics (`20_METRICS/METRICS.json`)",
+  "description": "Stage-0 measured metrics written by src/lora_self_rewrite/session.py. The schema pins the always-present identity, counters, phase, cache, and provenance fields that downstream analysis relies on. Per-turn timing keys, engine/timing diagnostics, GPU-memory snapshots, and other optional measurements may be added without a schema bump and are intentionally not enumerated.",
+  "type": "object",
+  "required": [
+    "metrics_version",
+    "session_id",
+    "started_at_utc",
+    "finished_at_utc",
+    "config",
+    "resolved_config",
+    "loaded_config",
+    "orchestrator_env",
+    "gpu_env",
+    "phases",
+    "turns",
+    "code_run_s",
+    "commit_s",
+    "read_fixed_overhead_s",
+    "generate_calls",
+    "counters",
+    "diagnosis",
+    "validation",
+    "preflight",
+    "gpu_container_billed_s_est",
+    "cache_tag",
+    "cache_fingerprint",
+    "engine_config",
+    "engine_config_hash",
+    "model_revision",
+    "dataset",
+    "session_wall_s",
+    "summary"
+  ],
+  "properties": {
+    "metrics_version": {
+      "const": 1
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "started_at_utc": {
+      "type": "string",
+      "minLength": 1
+    },
+    "finished_at_utc": {
+      "type": "string",
+      "minLength": 1
+    },
+    "config": {
+      "type": "object",
+      "required": [
+        "session_id",
+        "dataset_mode",
+        "max_tokens",
+        "diag_n",
+        "val_n",
+        "val_samples",
+        "max_turns",
+        "max_passes",
+        "max_code_runs",
+        "max_gen_answers",
+        "wall_limit_hours",
+        "read_max_length",
+        "protocol_deviations"
+      ],
+      "properties": {
+        "session_id": {
+          "type": "string"
+        },
+        "dataset_mode": {
+          "type": "string"
+        },
+        "max_tokens": {
+          "type": "integer"
+        },
+        "diag_n": {
+          "type": "integer"
+        },
+        "val_n": {
+          "type": "integer"
+        },
+        "val_samples": {
+          "type": "integer"
+        },
+        "max_turns": {
+          "type": "integer"
+        },
+        "max_passes": {
+          "type": "integer"
+        },
+        "max_code_runs": {
+          "type": "integer"
+        },
+        "max_gen_answers": {
+          "type": "integer"
+        },
+        "wall_limit_hours": {
+          "type": "number"
+        },
+        "read_max_length": {
+          "type": "integer"
+        },
+        "config_path": {
+          "type": ["string", "null"]
+        },
+        "deviation": {
+          "type": ["string", "null"]
+        },
+        "protocol_deviations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "resolved_config": {
+      "type": "object",
+      "required": [
+        "dataset_mode",
+        "model_id",
+        "model_revision",
+        "max_tokens",
+        "diag_n",
+        "val_n",
+        "val_samples",
+        "max_turns",
+        "max_passes",
+        "max_code_runs",
+        "max_gen_answers",
+        "wall_limit_hours",
+        "read_max_length"
+      ],
+      "additionalProperties": true
+    },
+    "loaded_config": {
+      "type": ["object", "null"]
+    },
+    "orchestrator_env": {
+      "type": ["object", "null"]
+    },
+    "gpu_env": {
+      "type": "object"
+    },
+    "phases": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "turns": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "code_run_s": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "commit_s": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "read_fixed_overhead_s": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "generate_calls": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["turn", "passes_used", "wall_s", "base_cache_hit", "timings"],
+        "properties": {
+          "turn": {
+            "type": "integer"
+          },
+          "passes_used": {
+            "type": "integer"
+          },
+          "wall_s": {
+            "type": "number"
+          },
+          "base_cache_hit": {
+            "type": "boolean"
+          },
+          "timings": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "counters": {
+      "type": "object",
+      "required": [
+        "reads",
+        "generated_answers",
+        "generated_tokens",
+        "diagnosis_cache_hits",
+        "validation_cache_hits",
+        "validation_cache_misses",
+        "base_cache_hits",
+        "base_cache_misses"
+      ],
+      "properties": {
+        "reads": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "generated_answers": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "generated_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "diagnosis_cache_hits": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "validation_cache_hits": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "validation_cache_misses": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "base_cache_hits": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "base_cache_misses": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": true
+    },
+    "diagnosis": {
+      "type": "object"
+    },
+    "validation": {
+      "type": "object",
+      "properties": {
+        "n_val": {
+          "type": "integer"
+        },
+        "val_samples": {
+          "type": "integer"
+        },
+        "base_cache_hit": {
+          "type": "boolean"
+        },
+        "gpu_s": {
+          "type": "number"
+        },
+        "timings": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    },
+    "preflight": {
+      "type": "object"
+    },
+    "gpu_container_billed_s_est": {
+      "type": ["number", "null"]
+    },
+    "gpu_container_billed_s_est_is_lower_bound": {
+      "type": "boolean"
+    },
+    "first_gpu_call_start_t": {
+      "type": "number"
+    },
+    "last_gpu_call_end_t": {
+      "type": "number"
+    },
+    "cache_tag": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cache_fingerprint": {
+      "type": "object"
+    },
+    "engine_config": {
+      "type": "object"
+    },
+    "engine_config_hash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dataset": {
+      "type": "object",
+      "required": ["dataset_mode", "source_revisions", "content_sha256", "identity"],
+      "properties": {
+        "dataset_mode": {
+          "type": "string"
+        },
+        "source_revisions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "content_sha256": {
+          "type": "string"
+        },
+        "identity": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "submitted_lora_snapshot": {
+      "type": "boolean"
+    },
+    "session_wall_s": {
+      "type": "number",
+      "minimum": 0
+    },
+    "summary": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:lora-self-rewrite:schema:run_manifest:1",
+  "title": "Run manifest (`00_RUN_MANIFEST.json`)",
+  "description": "Machine-readable identity and outcome for one run. Produced by scripts/new_run.py and updated by scripts/finalize_run.py; validated at runtime by src/lora_self_rewrite/manifest.py:validate_manifest. Optional diagnostic blocks (arbitrary config keys, artifacts, analysis links) are allowed.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "experiment_id",
+    "status",
+    "created_at_utc",
+    "code",
+    "model",
+    "dataset",
+    "protocol",
+    "hardware",
+    "results"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^[0-9]{8}T[0-9]{6}Z_[A-Z0-9-]+_[A-Za-z0-9]+_[0-9a-f]{7,40}$",
+      "description": "`<UTC timestamp>_<experiment-id>_<gpu>_<code-sha7>` as enforced by manifest.RUN_ID_RE."
+    },
+    "experiment_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parent_run_id": {
+      "type": ["string", "null"]
+    },
+    "resumed_from": {
+      "type": ["string", "null"]
+    },
+    "status": {
+      "enum": [
+        "planned",
+        "running",
+        "preempted",
+        "failed",
+        "withdrawn",
+        "submitted",
+        "validated-null",
+        "validated-positive",
+        "archived"
+      ]
+    },
+    "created_at_utc": {
+      "type": "string",
+      "minLength": 1
+    },
+    "finished_at_utc": {
+      "type": ["string", "null"]
+    },
+    "code": {
+      "type": "object",
+      "required": ["repo_sha", "file_sha256"],
+      "properties": {
+        "repo_sha": {
+          "type": "string",
+          "minLength": 1
+        },
+        "file_sha256": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "model": {
+      "type": "object",
+      "required": ["id", "revision", "dtype"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "not": {
+            "enum": ["unknown", "none", "null", ""]
+          },
+          "description": "Must be a pinned revision, never unknown/none/null."
+        },
+        "dtype": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "dataset": {
+      "type": "object",
+      "required": ["name", "splits"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "splits": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "source_revisions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "config": {
+      "type": "object"
+    },
+    "protocol": {
+      "type": "object",
+      "required": [
+        "max_tokens",
+        "passes_budget",
+        "code_budget",
+        "turns_budget",
+        "wall_limit_hours"
+      ],
+      "properties": {
+        "max_tokens": {
+          "type": "integer"
+        },
+        "passes_budget": {
+          "type": "integer"
+        },
+        "code_budget": {
+          "type": "integer"
+        },
+        "turns_budget": {
+          "type": "integer"
+        },
+        "wall_limit_hours": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": true
+    },
+    "hardware": {
+      "type": "object",
+      "required": ["gpu_requested"],
+      "properties": {
+        "gpu_requested": {
+          "type": "string",
+          "minLength": 1
+        },
+        "gpu_actual": {
+          "type": ["string", "null"]
+        },
+        "cache_tag": {
+          "type": ["string", "null"]
+        }
+      },
+      "additionalProperties": true
+    },
+    "results": {
+      "type": "object",
+      "required": ["decision", "submitted_lora"],
+      "properties": {
+        "passes_used": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "code_runs_used": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "decision": {
+          "type": ["string", "null"]
+        },
+        "submitted_lora": {
+          "type": "boolean"
+        },
+        "validation": {
+          "type": ["string", "null"]
+        },
+        "heldout": {
+          "type": ["string", "null"]
+        }
+      },
+      "additionalProperties": true
+    },
+    "artifacts": {
+      "type": "array"
+    },
+    "analysis": {
+      "type": "object",
+      "properties": {
+        "summary": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "checksums": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": ["status"],
+        "properties": {
+          "status": {
+            "enum": [
+              "failed",
+              "withdrawn",
+              "submitted",
+              "validated-null",
+              "validated-positive",
+              "archived"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": ["finished_at_utc"],
+        "properties": {
+          "finished_at_utc": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": true
+}

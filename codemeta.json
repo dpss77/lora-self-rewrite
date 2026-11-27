@@ -1,0 +1,25 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "lora-self-rewrite",
+  "description": "Zero-initialized rank-4 LoRA workspace adaptation of arXiv:2611.21885v2 for Qwen3.5-27B, with H200 vLLM/Modal serving, exact caches, and held-out evaluation.",
+  "version": "0.1.0",
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Daniel",
+      "familyName": "Pardo"
+    }
+  ],
+  "license": "https://opensource.org/licenses/MIT",
+  "codeRepository": "https://github.com/dpss77/lora-self-rewrite",
+  "issueTracker": "https://github.com/dpss77/lora-self-rewrite/issues",
+  "programmingLanguage": ["Python"],
+  "runtimePlatform": ["Python 3.11", "Linux", "NVIDIA H200"],
+  "keywords": ["large language models", "LoRA", "PEFT", "self-rewriting", "model editing", "vLLM", "Modal", "Qwen3.5", "H200", "reproducibility"],
+  "referencePublication": {
+    "@type": "ScholarlyArticle",
+    "name": "Language Models Can Rewrite Their Own Weights",
+    "url": "https://arxiv.org/abs/2611.21885v2"
+  }
+}

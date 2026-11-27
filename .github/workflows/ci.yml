@@ -1,0 +1,46 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Sync CPU/dev environment
+        run: uv sync --frozen --extra cpu --extra dev
+
+      - name: pytest (unit)
+        run: uv run --frozen --extra cpu --extra dev pytest -p no:cacheprovider -q -m unit
+
+      - name: pytest (contract)
+        run: uv run --frozen --extra cpu --extra dev pytest -p no:cacheprovider -q -m contract
+
+      - name: pytest (integration)
+        run: uv run --frozen --extra cpu --extra dev pytest -p no:cacheprovider -q -m integration
+
+      - name: ruff check
+        run: uv run --frozen --extra cpu --extra dev ruff check --no-cache src tests scripts modal_app.py
+
+      - name: ruff format check
+        run: uv run --frozen --extra cpu --extra dev ruff format --check --no-cache src tests scripts modal_app.py
+
+      - name: Build package
+        run: uv build
+
+      - name: Install wheel smoke test
+        run: |
+          uv venv /tmp/pkg-smoke
+          uv pip install --python /tmp/pkg-smoke/bin/python --no-deps dist/*.whl
+          /tmp/pkg-smoke/bin/python -c "import lora_self_rewrite; print(lora_self_rewrite.MODEL_ID)"

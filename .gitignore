@@ -1,0 +1,54 @@
+# ---------------------------------------------------------------------------
+# Local agent/tooling files (not part of the public project)
+# ---------------------------------------------------------------------------
+.opsami/
+.claude/
+.agents/
+CLAUDE.md
+AGENTS.md
+.DS_Store
+
+# Local-only migration/research/review history retained outside the project.
+/internal/
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.uv/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# ---------------------------------------------------------------------------
+# Secrets / local environment
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+
+# ---------------------------------------------------------------------------
+# Output contract: raw evidence and heavy artifacts never live in Git.
+# ---------------------------------------------------------------------------
+runs/
+artifacts/
+data/
+datasets/
+*.safetensors
+*.pt
+*.bin
+*.gguf
+*.log
+.modal/
+hf_cache/
+.cache/
+
+# Local third-party paper copies (not redistributed)
+/reference/paper/

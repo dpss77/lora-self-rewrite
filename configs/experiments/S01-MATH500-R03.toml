@@ -1,0 +1,21 @@
+# Stage-1 closure record: math500, rank-1 early-layer edit (statistically null).
+experiment_id = "S01-MATH500-R03"
+stage = 1
+arm = "R03"
+dataset_name = "math500"
+model_id = "Qwen/Qwen3.5-27B"
+model_revision = "81a287ca484a5e71148f5beb7f367bb5286d70f9"
+
+[protocol]
+max_tokens = 4096
+passes_budget = 20
+code_budget = 200
+turns_budget = 160
+wall_limit_hours = 3.0
+max_gen_answers = 128
+read_max_length = 8192
+
+[splits]
+practice = 400
+reserved = 100
+heldout = 0
