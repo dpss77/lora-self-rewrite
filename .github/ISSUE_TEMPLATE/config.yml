@@ -1,8 +1,8 @@
 blank_issues_enabled: true
 contact_links:
   - name: Questions and coordination
-    url: https://github.com/dpss77/lora-self-rewrite/discussions
+    url: https://github.com/dnpardo/lora-self-rewrite/discussions
     about: Use Discussions for general questions, coordination, and non-sensitive support.
   - name: Security report
-    url: https://github.com/dpss77/lora-self-rewrite/security/advisories/new
+    url: https://github.com/dnpardo/lora-self-rewrite/security/advisories/new
     about: Report vulnerabilities privately; do not open a public issue.

@@ -35,10 +35,10 @@ dependencies = [
 ]
 
 [project.urls]
-  Repository = "https://github.com/dpss77/lora-self-rewrite"
-  Issues = "https://github.com/dpss77/lora-self-rewrite/issues"
+  Repository = "https://github.com/dnpardo/lora-self-rewrite"
+  Issues = "https://github.com/dnpardo/lora-self-rewrite/issues"
   Paper = "https://arxiv.org/abs/2611.21885v2"
-  Documentation = "https://github.com/dpss77/lora-self-rewrite/tree/main/docs"
+  Documentation = "https://github.com/dnpardo/lora-self-rewrite/tree/main/docs"
 
 [project.optional-dependencies]
 # Test/CPU profile: no vLLM, Modal, or GPU serving packages.

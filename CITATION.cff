@@ -8,7 +8,7 @@ authors:
 version: "0.1.0"
 date-released: "2026-11-27"
 license: MIT
-repository-code: "https://github.com/dpss77/lora-self-rewrite"
+repository-code: "https://github.com/dnpardo/lora-self-rewrite"
 references:
   - type: article
     title: "Language Models Can Rewrite Their Own Weights"

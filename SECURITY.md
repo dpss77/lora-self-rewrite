@@ -9,7 +9,7 @@ and the latest `0.1.x` release; older snapshots are not maintained.
 
 Report privately through GitHub Security Advisories:
 
-<https://github.com/dpss77/lora-self-rewrite/security/advisories/new>
+<https://github.com/dnpardo/lora-self-rewrite/security/advisories/new>
 
 Do not open a public issue, and do not include credentials, private model or
 dataset contents, or raw logs in the report. No dedicated security email is
